@@ -1,0 +1,63 @@
+{% extends 'profile/dashboard.html' %} {% block userView %}
+<div
+  class="
+    d-flex
+    justify-content-between
+    flex-wrap flex-md-nowrap
+    align-items-center
+    pt-3
+    pb-2
+    mb-3
+    border-bottom
+  "
+>
+  <h1 class="h2">{{current_user.name}}'s Profile</h1>
+  <!-- <div class="btn-toolbar mb-2 mb-md-0">
+  <div class="btn-group me-2">
+    <button type="button" class="btn btn-sm btn-outline-secondary">
+      Share
+    </button>
+    <button type="button" class="btn btn-sm btn-outline-secondary">
+      Export
+    </button>
+  </div>
+  <button
+    type="button"
+    class="btn btn-sm btn-outline-secondary dropdown-toggle"
+  >
+    <span data-feather="calendar"></span>
+    This week
+  </button>
+</div> -->
+</div>
+
+<!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
+<!-- <div class="table-responsive"></div> -->
+
+<div class="container-fluid d-flex justify-content-between mt-5">
+  <div class="card text-dark">
+    <div class="card-body">
+      <h4 class="card-title">No. of Prescriptions</h4>
+      <h3 class="card-subtitle mb2 text-center">
+        {{user_profile.prescriptions | length}}
+      </h3>
+    </div>
+  </div>
+  <div class="card text-dark">
+    <div class="card-body">
+      <h4 class="card-title">No. of Tests Ordered</h4>
+      <h3 class="card-subtitle mb2 text-center">
+        {{user_profile.tests | length}}
+      </h3>
+    </div>
+  </div>
+  <div class="card text-dark">
+    <div class="card-body">
+      <h4 class="card-title">No. of Tests Completed</h4>
+      <h3 class="card-subtitle mb2 text-center">
+        {{user_profile.reports | length}}
+      </h3>
+    </div>
+  </div>
+</div>
+{% endblock %}

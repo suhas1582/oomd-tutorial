@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block content %} {% with messages =
+get_flashed_messages() %} {% if messages %} {% for message in messages %}
+<div class="container w-50">
+  <div
+    class="
+      alert alert-danger alert-dismissible
+      fade
+      show
+      d-flex
+      justify-content-between
+    "
+    role="alert"
+  >
+    <strong>{{message}}</strong>
+    <button
+      type="button"
+      class="close float-right"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+{% endfor %} {% endif %} {% endwith %}
+
+<div
+  class="container-fluid text-center d-flex align-items-center flex-column mt-5"
+>
+  <h1 class="mb-3 fw-normal">Please sign-in here</h1>
+  <form method="POST" class="form mt-5">
+    {{ login_form.csrf_token }} {{login_form.hidden_tag()}}
+    {{login_form.national_id(class="form-control mb-2", placeholder='National
+    Id')}} {{login_form.dob(class="form-control mb-3")}}
+    {{login_form.submit(class="btn btn-success btn-lg")}}
+  </form>
+</div>
+
+{% endblock %}

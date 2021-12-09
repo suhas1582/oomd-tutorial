@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block content %}
+
+<div
+  class="container-fluid text-center d-flex align-items-center flex-column mt-5"
+>
+  <h1 class="mb-3 fw-normal">Update Profile Details here</h1>
+  <form method="POST" class="form mt-5">
+    {{ profile_updation_form.csrf_token }}
+    {{profile_updation_form.hidden_tag()}}
+    <!-- <input
+    type="email"
+    class="form-control mb-2"
+    placeholder="name@example.com"
+  /> -->
+    {{profile_updation_form.name(class="form-control mb-2",
+    placeholder='Name')}}
+    {{profile_updation_form.national_id(class="form-control mb-2",
+    placeholder='National Id')}}
+    {{profile_updation_form.phone_no(class="form-control mb-2",
+    placeholder='Phone Number exclude country code (+91)')}}
+    {{profile_updation_form.dob(class="form-control mb-3")}}
+    {{profile_updation_form.submit(class="btn btn-success btn-lg")}}
+    <!-- <input type="password" class="form-control mb-3" placeholder="password" />
+  <input type="submit" value="Login" class="btn btn-success btn-lg" /> -->
+  </form>
+</div>
+
+{% endblock %}
