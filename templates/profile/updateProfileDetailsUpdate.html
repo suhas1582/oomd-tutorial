@@ -18,7 +18,10 @@
     placeholder='National Id')}}
     {{profile_updation_form.phone_no(class="form-control mb-2",
     placeholder='Phone Number exclude country code (+91)')}}
-    {{profile_updation_form.dob(class="form-control mb-3")}}
+    {{profile_updation_form.dob(class="form-control mb-3")}} {%if
+    current_user.is_doctor%}
+    {{profile_updation_form.specialization(class="form-control mb-3")}}
+    {{profile_updation_form.location(class="form-control mb-3")}} {%endif%}
     {{profile_updation_form.submit(class="btn btn-success btn-lg")}}
     <!-- <input type="password" class="form-control mb-3" placeholder="password" />
   <input type="submit" value="Login" class="btn btn-success btn-lg" /> -->

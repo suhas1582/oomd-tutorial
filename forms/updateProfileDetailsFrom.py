@@ -8,4 +8,6 @@ class UpdateProfileDetailsForm(FlaskForm):
     national_id = StringField('National ID', validators=[DataRequired()])
     phone_no = StringField('Phone Number', validators=[DataRequired(), Length(min=10, max=10, message='The phone number shoud be exactly 10 numbers long')])
     dob = DateField('DOB', validators=[DataRequired()])
+    specialization = StringField('Specialization')
+    location = StringField('Location')
     submit = SubmitField('Update Profile')

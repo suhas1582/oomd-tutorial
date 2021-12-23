@@ -1,0 +1,168 @@
+{%extends 'base.html'%} {%block content%}
+
+<div class="container">
+  <h1 class="text-center text-white mt-3">Add Prescription</h1>
+</div>
+<div class="container-fluid text-center justify-content-center mt-5">
+  <form action="{{url_for('add_prescription')}}" method="POST" class="form">
+    <table class="table table-bordered" id="prescription-table">
+      <thead class="text-white">
+        <tr>
+          <th scope="col" colspan="3">Medicine Name</th>
+          <th scope="col">Dosage</th>
+          <th scope="col" colspan="3">Directions (if any...)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="3">
+            <input type="text" name="medicine1" class="form-control w-100" />
+          </td>
+          <td>
+            <input
+              type="text"
+              name="dosage1m"
+              id="dosage1m"
+              class="form-inline"
+              style="width: 50px"
+              value="0"
+            />
+
+            <input
+              type="text"
+              name="dosage1a"
+              id="dosage1a"
+              class="form-inline"
+              style="width: 50px"
+              value="0"
+            />
+
+            <input
+              type="text"
+              name="dosage1e"
+              id="dosage1e"
+              class="form-inline"
+              style="width: 50px"
+              value="0"
+            />
+          </td>
+          <td>
+            <textarea
+              name="directions1"
+              id="directions1"
+              class="w-100"
+            ></textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input
+      type="submit"
+      value="Add Presctiption"
+      class="btn btn-lg btn-success"
+    />
+  </form>
+  <button
+    class="btn btn-lg btn-warning mt-3"
+    id="add-medicine-button"
+    onclick="javascript:addCreatedElement()"
+  >
+    Add Medicine
+  </button>
+</div>
+
+<script type="text/javascript">
+  function addCreatedElement() {
+    console.log("function called");
+    const table = document.getElementById("prescription-table");
+    // create a new row
+    const row = table.insertRow(-1);
+    // create first column
+    const cell1 = row.insertCell(0);
+    cell1.setAttribute("colspan", "3");
+    const medicineInput = createMedicineInput(table);
+    cell1.appendChild(medicineInput);
+    // create second column
+    const cell2 = row.insertCell(1);
+    const inputList = createDosageInput(table);
+    cell2.appendChild(inputList[0]);
+    cell2.appendChild(inputList[1]);
+    cell2.appendChild(inputList[2]);
+    // create third column
+    const cell3 = row.insertCell(2);
+    cell3.setAttribute("colspan", "3");
+    const directionTextArea = createDirectionTextBox(table);
+    cell3.appendChild(directionTextArea);
+  }
+
+  function createMedicineInput(table) {
+    current_medicine_number = table.rows.length - 1;
+    const input = document.createElement("input");
+    input.setAttribute("name", "medicine" + current_medicine_number.toString());
+    input.setAttribute("class", "form-control w-100");
+    return input;
+  }
+
+  function createDosageInput(table) {
+    current_medicine_number = table.rows.length - 1;
+
+    const input1 = document.createElement("input");
+    input1.setAttribute(
+      "name",
+      "dosage" + current_medicine_number.toString() + "m"
+    );
+    input1.setAttribute(
+      "id",
+      "dosage" + current_medicine_number.toString() + "m"
+    );
+    input1.setAttribute("value", 0);
+    input1.setAttribute("class", "form-inline");
+    input1.setAttribute("style", "width:50px;");
+
+    const input2 = document.createElement("input");
+    input2.setAttribute(
+      "name",
+      "dosage" + current_medicine_number.toString() + "a"
+    );
+    input2.setAttribute(
+      "id",
+      "dosage" + current_medicine_number.toString() + "a"
+    );
+    input2.setAttribute("value", 0);
+    input2.setAttribute("class", "form-inline");
+    input2.setAttribute("style", "width:50px;");
+
+    const input3 = document.createElement("input");
+    input3.setAttribute(
+      "name",
+      "dosage" + current_medicine_number.toString() + "e"
+    );
+    input3.setAttribute(
+      "id",
+      "dosage" + current_medicine_number.toString() + "e"
+    );
+    input3.setAttribute("value", 0);
+    input3.setAttribute("class", "form-inline");
+    input3.setAttribute("style", "width:50px;");
+    const inputList = [input1, input2, input3];
+
+    return inputList;
+  }
+
+  function createDirectionTextBox(table) {
+    const current_medicine_number = table.rows.length - 1;
+    const textArea = document.createElement("textarea");
+    textArea.setAttribute(
+      "name",
+      "directions" + current_medicine_number.toString()
+    );
+    textArea.setAttribute(
+      "id",
+      "directions" + current_medicine_number.toString()
+    );
+    textArea.setAttribute("class", "w-100");
+    return textArea;
+  }
+</script>
+
+{%endblock%}

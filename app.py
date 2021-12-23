@@ -8,6 +8,7 @@ from models.doctor import Doctor
 from models.patient import Patient
 from models.userProfile import UserProfile
 from models.user import User
+import copy
 
 app = Flask(__name__)
 
@@ -136,10 +137,11 @@ def profile():
         session['current_patient_id'] = user_id
         print(user_id)
         user_profile = UserProfile.find_user_by_id(user_id)
+        # print(user_profile.prescriptions.__dict__)
         print(user_profile.name)
-        return render_template('profile/dashboard.html', user_profile = user_profile)
+        return render_template('profile/dashboard.html', user_profile = user_profile, zip=zip)
 
-    return render_template('profile/dashboard.html', user_profile = user_profile)
+    return render_template('profile/dashboard.html', user_profile = user_profile, zip=zip)
 
 @app.route('/my-profile/update', methods=["GET", "POST"])
 @login_required
@@ -151,6 +153,10 @@ def update_my_profile():
         profile_updation_form.national_id.data = current_user.national_id
         profile_updation_form.phone_no.data = current_user.phone_no
         profile_updation_form.dob.data = current_user.dob
+        if current_user.is_doctor:
+            doctor = Doctor.find_by_id(current_user.national_id)
+            profile_updation_form.specialization.data = doctor.specialization
+            profile_updation_form.location.data = doctor.location
 
     if profile_updation_form.validate_on_submit() and request.method == 'POST':
 
@@ -167,6 +173,56 @@ def update_my_profile():
         return redirect(url_for('index'))
 
     return render_template('profile/updateProfileDetailsUpdate.html', profile_updation_form=profile_updation_form)
+
+############################# HealthcareManager ##############################
+
+@login_required
+@app.route('/add-prescription', methods=['GET', 'POST'])
+def add_prescription():
+    if request.method == 'POST':
+        i = 1
+        medicines = []
+        directions = []
+        doctor = Doctor.find_by_id(current_user.national_id)
+        medicine_dict = {}
+        input_prescription = request.form.items()
+        length=0
+        for _ in request.form.items():
+            length+=1
+        for _ in range(length // 5):
+            medicine_dict.clear()
+            medicine_dict['medicine'] = next(input_prescription)[1]
+            dosage_string = str(next(input_prescription)[1]) + '-' + str(next(input_prescription)[1]) + '-' + str(next(input_prescription)[1])
+            medicine_dict['dosage'] = dosage_string
+            medicines.append(copy.deepcopy(medicine_dict))
+            direction = next(input_prescription)[1]
+            directions.append(direction)
+        print(medicines)
+        print(directions)
+        doctor.add_prescription(session['current_patient_id'], medicines, directions)
+        required_user_profile = UserProfile.find_user_by_id(session['current_patient_id'])
+        return render_template('profile/dashboard.html', user_profile = required_user_profile, zip=zip)
+        
+              
+    return render_template('healthcareManager/prescription.html')
+
+@login_required
+@app.route('/add_test', methods=["GET", "POST"])
+def add_test():
+    if request.method == "POST":
+        tests = []
+        doctor = Doctor.find_by_id(current_user.national_id)
+        length=0
+        input_tests = request.form.items()
+        # print(input_tests.__dict__)
+        for _ in request.form.items():
+            length+=1
+        print(length)
+        for _ in range(length):
+            test = next(input_tests)[1]
+            tests.append(test)
+        doctor.order_tests(session['current_patient_id'],tests)
+    return render_template('healthcareManager/test.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

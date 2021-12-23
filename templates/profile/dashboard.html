@@ -116,7 +116,7 @@
           border-bottom
         "
       >
-        <h1 class="h2">{%if current_user.is_doctor%}Dr. {%endif%}{{user_profile.name}}'s Profile</h1>
+        <h1 class="h2">{%if current_user.is_doctor and current_user.national_id == user_profile.id%}Dr. {%endif%}{{user_profile.name}}'s Profile</h1>
         {% if current_user.is_doctor %}
         <div class="btn-toolbar mb-2 mb-md-0">
           <!-- <div class="btn-group me-2">
@@ -148,6 +148,31 @@
 
       <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
       <!-- <div class="table-responsive"></div> -->
+      {% with messages =
+        get_flashed_messages() %} {% if messages %} {% for message in messages %}
+        <div class="container w-50">
+          <div
+            class="
+              alert alert-success alert-dismissible
+              fade
+              show
+              d-flex
+              justify-content-between
+            "
+            role="alert"
+          >
+            <strong>{{message}}</strong>
+            <button
+              type="button"
+              class="close float-right"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
 
       <div class="container-fluid d-flex justify-content-between mt-5">
         <div class="card text-dark">
@@ -199,7 +224,8 @@
               Export
             </button>
           </div> -->
-          <a href="">
+          {% if current_user.is_doctor %}
+          <a href="{{url_for('add_prescription')}}">
             <button
             type="button"
             class="btn btn-sm btn-outline-success"
@@ -207,8 +233,163 @@
             <span data-feather="calendar"></span>
             Add
           </button>
+          {% endif %}
           </a>
         </div>
+      </div>
+      <div class="container-fluid">
+        {%for prescription in user_profile.prescriptions%}
+          <div class="card mb-3">
+            <h4 class="card-header text-dark">
+              {{prescription.prescribed_on.date()}}
+            </h4>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Medicine</th>
+                    <th>Dosage</th>
+                    <th>Directions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for medicine, direction in zip(prescription.medicines, prescription.directions) %}
+                    <tr>
+                      <td>{{medicine['medicine']}}</td>
+                      <td>{{medicine['dosage']}}</td>
+                      <td>{{direction}}</td>
+                    </tr>
+                  {%endfor%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {%endfor%}
+        <div
+        class="
+          d-flex
+          justify-content-between
+          flex-wrap flex-md-nowrap
+          align-items-center
+          pt-3
+          pb-2
+          mb-3
+          mt-5
+          border-bottom
+          w-100
+        "
+      >
+        <h1 class="h2">Tests</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <!-- <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">
+              Share
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">
+              Export
+            </button>
+          </div> -->
+          {% if current_user.is_doctor %}
+          <a href="{{url_for('add_test')}}">
+            <button
+            type="button"
+            class="btn btn-sm btn-outline-success"
+          >
+            <span data-feather="calendar"></span>
+            Add
+          </button>
+          {% endif %}
+          </a>
+        </div>
+      </div>
+      <div class="container-fluid">
+        {%for test in user_profile.tests%}
+          <div class="card mb-3">
+            <h4 class="card-header text-dark">
+              {{test.ordered_on.date()}}
+            </h4>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Test</th>
+                    <th>Ordered_by</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{test.name}}</td>
+                    <td>Dr. {{test.ordered_by.name}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {%endfor%}
+      
+      </div>
+      <div
+        class="
+          d-flex
+          justify-content-between
+          flex-wrap flex-md-nowrap
+          align-items-center
+          pt-3
+          pb-2
+          mb-3
+          mt-5
+          border-bottom
+          w-100
+        "
+      >
+        <h1 class="h2">Test Reports</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <!-- <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">
+              Share
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">
+              Export
+            </button>
+          </div> -->
+          <!-- {% if current_user.is_doctor %}
+            <a href="{{url_for('add_test')}}">
+              <button
+              type="button"
+              class="btn btn-sm btn-outline-success"
+            >
+              <span data-feather="calendar"></span>
+              Add
+            </button>
+            </a>
+          {% endif %} -->
+        </div>
+      </div>
+      <div class="container-fluid">
+        {%for test in user_profile.test_reports%}
+          <div class="card mb-3">
+            <h4 class="card-header text-dark">
+              {{test.ordered_on.date()}}
+            </h4>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Test</th>
+                    <th>Ordered_by</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{test.name}}</td>
+                    <td>Dr. {{test.ordered_by.name}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {%endfor%}
+      
       </div>
     </main>
   </div>

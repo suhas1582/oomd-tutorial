@@ -1,0 +1,119 @@
+{%extends 'base.html'%} {%block content%}
+
+<div class="container">
+  <h1 class="text-center text-white mt-3">Order Tests</h1>
+</div>
+<div class="container-fluid text-center justify-content-center mt-5">
+  <form action="{{url_for('add_test')}}" method="POST" class="form">
+    <table class="table table-bordered" id="prescription-table">
+      <thead class="text-white">
+        <tr>
+          <th scope="col">Test Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input type="text" name="test1" class="form-control w-100" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input
+      type="submit"
+      value="Order Tests"
+      class="btn btn-lg btn-success"
+    />
+  </form>
+  <button
+    class="btn btn-lg btn-warning mt-3"
+    id="add-medicine-button"
+    onclick="javascript:addCreatedElement()"
+  >
+    Add another test
+  </button>
+</div>
+
+<script type="text/javascript">
+  function addCreatedElement() {
+    console.log("function called");
+    const table = document.getElementById("prescription-table");
+    // create a new row
+    const row = table.insertRow(-1);
+    // create first column
+    const cell1 = row.insertCell(0);
+    const test_input = createTestInput(table);
+    cell1.appendChild(test_input);
+  }
+
+  function createTestInput(table) {
+    current_medicine_number = table.rows.length - 1;
+    const input = document.createElement("input");
+    input.setAttribute("name", "test" + current_medicine_number.toString());
+    input.setAttribute("class", "form-control w-100");
+    return input;
+  }
+
+  //   function createDosageInput(table) {
+  //     current_medicine_number = table.rows.length - 1;
+
+  //     const input1 = document.createElement("input");
+  //     input1.setAttribute(
+  //       "name",
+  //       "dosage" + current_medicine_number.toString() + "m"
+  //     );
+  //     input1.setAttribute(
+  //       "id",
+  //       "dosage" + current_medicine_number.toString() + "m"
+  //     );
+  //     input1.setAttribute("value", 0);
+  //     input1.setAttribute("class", "form-inline");
+  //     input1.setAttribute("style", "width:50px;");
+
+  //     const input2 = document.createElement("input");
+  //     input2.setAttribute(
+  //       "name",
+  //       "dosage" + current_medicine_number.toString() + "a"
+  //     );
+  //     input2.setAttribute(
+  //       "id",
+  //       "dosage" + current_medicine_number.toString() + "a"
+  //     );
+  //     input2.setAttribute("value", 0);
+  //     input2.setAttribute("class", "form-inline");
+  //     input2.setAttribute("style", "width:50px;");
+
+  //     const input3 = document.createElement("input");
+  //     input3.setAttribute(
+  //       "name",
+  //       "dosage" + current_medicine_number.toString() + "e"
+  //     );
+  //     input3.setAttribute(
+  //       "id",
+  //       "dosage" + current_medicine_number.toString() + "e"
+  //     );
+  //     input3.setAttribute("value", 0);
+  //     input3.setAttribute("class", "form-inline");
+  //     input3.setAttribute("style", "width:50px;");
+  //     const inputList = [input1, input2, input3];
+
+  //     return inputList;
+  //   }
+
+  //   function createDirectionTextBox(table) {
+  //     const current_medicine_number = table.rows.length - 1;
+  //     const textArea = document.createElement("textarea");
+  //     textArea.setAttribute(
+  //       "name",
+  //       "directions" + current_medicine_number.toString()
+  //     );
+  //     textArea.setAttribute(
+  //       "id",
+  //       "directions" + current_medicine_number.toString()
+  //     );
+  //     textArea.setAttribute("class", "w-100");
+  //     return textArea;
+  //   }
+</script>
+
+{%endblock%}
